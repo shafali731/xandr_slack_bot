@@ -117,34 +117,6 @@ class OnboardingTutorial:
         #     "|Learn How to Pin a Message>*"
         # )
         information = (
-        # "type": "plain_text",
-		# "emoji": True,
-		# "text": "Approve"
-        # # {
-		# # 	"type": "actions",
-		# 	"elements": [
-		# 		{
-		# 			"type": "button",
-		# 			"text": {
-		# 				"type": "plain_text",
-		# 				"emoji": True,
-		# 				"text": "Approve"
-		# 			},
-		# 			"style": "primary",
-		# 			"value": "click_me_123"
-		# 		},
-		# 		{
-		# 			"type": "button",
-		# 			"text": {
-		# 				"type": "plain_text",
-		# 				"emoji": True,
-		# 				"text": "Deny"
-		# 			},
-		# 			"style": "danger",
-		# 			"value": "click_me_123"
-		# 		}
-		# 	]
-		# }
         )
         sec_info= ()
         # return self._get_task_block(text, information)
@@ -222,7 +194,7 @@ class OnboardingTutorial:
     def _get_task_block2(text, information, sec_info):
         return [
             # {"type": "section", "text": {"type": "mrkdwn", "text": text}},
-            {"type": "actions", "elements": [{"type": "button", "text": {"type": "plain_text","emoji": True,"text": "needs improvement"},"style": "danger","value": "click_me_123"}]},
-            {"type": "actions", "elements": [{"type": "button", "text": {"type": "plain_text","emoji": True,"text": "satisfactory"},"style": "primary","value": "click_me_123"}]},
+            {"type": "actions", "elements": [{"type": "button", "text": {"type": "plain_text","emoji": True,"text": "needs improvement"},"style": "danger","value": "good"}]},
+            {"type": "actions", "elements": [{"type": "button", "text": {"type": "plain_text","emoji": True,"text": "satisfactory"},"style": "primary","value": "bad"}]},
 
         ]

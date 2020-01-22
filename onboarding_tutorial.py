@@ -64,12 +64,39 @@ class OnboardingTutorial:
         },
     }
     DIVIDER_BLOCK = {"type": "divider"}
+    SAD_BLOCK= {
+    "type":"section",
+    "text":{
+        "type": "mrkdwn",
+        "text": (
+            "why so sad"
+        ),
+    },
+    }
+    HAPPY_BLOCK= {
+    "type":"section",
+    "text":{
+        "type": "mrkdwn",
+        "text": (
+            "Yay! Tell me more!"
+        ),
+    },
+    }
+    OTHER_BLOCK= {
+    "type":"section",
+    "text":{
+        "type": "mrkdwn",
+        "text": (
+            "Yay! Tell me more!"
+        ),
+    },
+    }
 
 # }
 
     def __init__(self, channel):
         self.channel = channel
-        self.username = "feedbackbot"
+        self.username = "feedback_bot"
         self.icon_emoji = ":robot_face:"
         self.timestamp = ""
         self.reaction_task_completed = False
@@ -87,7 +114,59 @@ class OnboardingTutorial:
                 # self.Y_N,
                 # *self._get_reaction_block(),
                 # self.DIVIDER_BLOCK,
-                *self._get_pin_block(),
+                # *self._get_pin_block(),
+            ],
+
+        }
+
+    def get_mess_sad(self):
+        return{
+            "ts": self.timestamp,
+            "channel": self.channel,
+            "username": self.username,
+            "icon_emoji": self.icon_emoji,
+            "blocks": [
+                # self.WELCOME_BLOCK,
+                self.SAD_BLOCK,
+                self.DIVIDER_BLOCK,
+                # self.Y_N,
+                # *self._get_reaction_block(),
+                # self.DIVIDER_BLOCK,
+                # *self._get_pin_block(),
+            ],
+
+        }
+    def get_mess_happy(self):
+        return{
+            "ts": self.timestamp,
+            "channel": self.channel,
+            "username": self.username,
+            "icon_emoji": self.icon_emoji,
+            "blocks": [
+                # self.WELCOME_BLOCK,
+                self.HAPPY_BLOCK,
+                self.DIVIDER_BLOCK,
+                # self.Y_N,
+                # *self._get_reaction_block(),
+                # self.DIVIDER_BLOCK,
+                # *self._get_pin_block(),
+            ],
+
+        }
+    def get_mess_other(self):
+        return{
+            "ts": self.timestamp,
+            "channel": self.channel,
+            "username": self.username,
+            "icon_emoji": self.icon_emoji,
+            "blocks": [
+                # self.WELCOME_BLOCK,
+                self.OTHER_BLOCK,
+                self.DIVIDER_BLOCK,
+                # self.Y_N,
+                # *self._get_reaction_block(),
+                # self.DIVIDER_BLOCK,
+                # *self._get_pin_block(),
             ],
 
         }
@@ -108,74 +187,20 @@ class OnboardingTutorial:
     def _get_pin_block(self):
         task_checkmark = self._get_checkmark(self.pin_task_completed)
         text = (
-            # f"{task_checkmark} *Pin this message* :round_pushpin:\n"
-            # "Important messages and files can be pinned to the details pane in any channel or"
-            # " direct message, including group messages, for easy reference."
+            f"{task_checkmark} *Pin this message* :round_pushpin:\n"
+            "Important messages and files can be pinned to the details pane in any channel or"
+            " direct message, including group messages, for easy reference."
         )
-        # information = (
-        #     ":information_source: *<https://get.slack.help/hc/en-us/articles/205239997-Pinning-messages-and-files"
-        #     "|Learn How to Pin a Message>*"
-        # )
         information = (
+            ":information_source: *<https://get.slack.help/hc/en-us/articles/205239997-Pinning-messages-and-files"
+            "|Learn How to Pin a Message>*"
         )
+        # information = ()
         sec_info= ()
-        # return self._get_task_block(text, information)
-        return self._get_task_block2(text, information, sec_info)
+        return self._get_task_block(text, information)
+        # return self._get_task_block2(text, information, sec_info)
 
-    # def _get_checkboxes(self):
-    #     text = (
-    #         f"{task_checkmark} *Pin this message* :round_pushpin:\n"
-    #         "Important messages and files can be pinned to the details pane in any channel or"
-    #         " direct message, including group messages, for easy reference."
-    #     )
-    #     attachments =  (
-    #         "text": "Choose a game to play",
-    #         "fallback": "You are unable to choose a game",
-    #         "callback_id": "wopr_game",
-    #         "color": "#3AA3E3",
-    #         "attachment_type": "default",
-    #         "actions": [
-    #             {
-    #                 "name": "game",
-    #                 "text": "Chess",
-    #                 "type": "button",
-    #                 "value": "chess"
-    #             },
-    #             {
-    #                 "name": "game",
-    #                 "text": "Falken's Maze",
-    #                 "type": "button",
-    #                 "value": "maze"
-    #             }
-    #             ])
-    # @staticmethod
-    # def thin():
-    #     return
-    #     {
-    # 		"type": "actions",
-    # 		"elements": [
-    # 			{
-    # 				"type": "button",
-    # 				"text": {
-    # 					"type": "plain_text",
-    # 					"emoji": True,
-    # 					"text": "Approve"
-    # 				},
-    # 				"style": "primary",
-    # 				"value": "click_me_123"
-    # 			},
-    # 			{
-    # 				"type": "button",
-    # 				"text": {
-    # 					"type": "plain_text",
-    # 					"emoji": True,
-    # 					"text": "Deny"
-    # 				},
-    # 				"style": "danger",
-    # 				"value": "click_me_123"
-    # 			}
-    # 		]
-    # 	}
+
 
     @staticmethod
     def _get_checkmark(task_completed: bool) -> str:
@@ -193,8 +218,23 @@ class OnboardingTutorial:
     @staticmethod
     def _get_task_block2(text, information, sec_info):
         return [
-            # {"type": "section", "text": {"type": "mrkdwn", "text": text}},
-            {"type": "actions", "elements": [{"type": "button", "text": {"type": "plain_text","emoji": True,"text": "needs improvement"},"style": "danger","value": "good"}]},
-            {"type": "actions", "elements": [{"type": "button", "text": {"type": "plain_text","emoji": True,"text": "satisfactory"},"style": "primary","value": "bad"}]},
+            {"type": "section", "text": {"type": "mrkdwn", "text": text}},
+            # {"type": "interactive_message", "attachments": [{"type": "button", "text": {"type": "plain_text","emoji": True,"text": "needs improvement"},"style": "danger","value": "good"}]},
+            # {"type": "button",
+            # "attachments":[{
+            # "callback_id":"button_cli",
+            # "attachment_type": "default",
+            # # [{
+            # "actions":
+            # [{
+            # "type": "button",
+            # "text":
+            # {"type": "plain_text","emoji": True,"text": "satisfactory"},
+            # "style": "primary","value": "bad"}]
+            # # }]
+            # }]
+            # },
+            #  {"type": "actions","elements": [{"type": "button", "text": {"type": "plain_text","emoji": True,"text": "needs improvement"},"style": "danger","value": "good", "action_id": "improv"}]},
+            # {"type": "actions", "elements": [{"type": "button", "text": {"type": "plain_text","emoji": True,"text": "satisfactory"},"style": "primary","value": "bad"}]},
 
         ]

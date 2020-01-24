@@ -1,58 +1,6 @@
-# {
-#     "channel": "D0123456",
-#     "username": "pythonboardingbot",
-#     "icon_emoji": ":robot_face:",
-#     "blocks": [
-#         {
-#             "type": "section",
-#             "text": {
-#                 "type": "mrkdwn",
-#                 "text": "Welcome to Slack! :wave: We're so glad you're here. :blush:\n\n*Get started by completing the steps below:*",
-#             },
-#         },
-#         {"type": "divider"},
-#         {
-#             "type": "section",
-#             "text": {
-#                 "type": "mrkdwn",
-#                 "text": ":white_large_square: *Add an emoji reaction to this message* :thinking_face:\nYou can quickly respond to any message on Slack with an emoji reaction. Reactions can be used for any purpose: voting, checking off to-do items, showing excitement.",
-#             },
-#         },
-#         {
-#             "type": "context",
-#             "elements": [
-#                 {
-#                     "type": "mrkdwn",
-#                     "text": " :information_source: *<https://get.slack.help/hc/en-us/articles/206870317-Emoji-reactions|Learn How to Use Emoji Reactions>*",
-#                 }
-#             ],
-#         },
-#         {"type": "divider"},
-#         {
-#             "type": "section",
-#             "text": {
-#                 "type": "mrkdwn",
-#                 "text": ":white_large_square: *Pin this message* :round_pushpin:\nImportant messages and files can be pinned to the details pane in any channel or direct message, including group messages, for easy reference.",
-#             },
-#         },
-#         {
-#             "type": "context",
-#             "elements": [
-#                 {
-#                     "type": "mrkdwn",
-#                     "text": " :information_source: *<https://get.slack.help/hc/en-us/articles/205239997-Pinning-messages-and-files|Learn How to Pin a Message>*",
-#                 }
-#             ],
-#         },
-#     ],
-# }
-
 class OnboardingTutorial:
     """Constructs the onboarding message and stores the state of which tasks were completed."""
 
-    # TODO: Create a better message builder:
-    # https://github.com/slackapi/python-slackclient/issues/392
-    # https://github.com/slackapi/python-slackclient/pull/400
     WELCOME_BLOCK = {
         "type": "section",
         "text": {
@@ -69,7 +17,8 @@ class OnboardingTutorial:
     "text":{
         "type": "mrkdwn",
         "text": (
-            "why so sad"
+            "Sorry to hear :cry: Please let us know *what* and *why* you were dissapointed. \n"
+            "Also please detail how you think we can *improve* and any details you feel necessary\n"
         ),
     },
     }
@@ -78,7 +27,8 @@ class OnboardingTutorial:
     "text":{
         "type": "mrkdwn",
         "text": (
-            "Yay! Tell me more!"
+            "Great! :smiley: Let us know *what* and *why* you enjoyed. \n "
+            "Also please detail how you think we can *improve* and any details you feel necessary\n"
         ),
     },
     }
@@ -87,7 +37,25 @@ class OnboardingTutorial:
     "text":{
         "type": "mrkdwn",
         "text": (
-            "Yay! Tell me more!"
+            "Thank you for your feedback"
+        ),
+    },
+    }
+    INCORRECT_BLOCK= {
+    "type":"section",
+    "text":{
+        "type": "mrkdwn",
+        "text": (
+            "Invalid input, please type 1 or 5"
+        ),
+    },
+    }
+    BAD_BLOCK= {
+    "type":"section",
+    "text":{
+        "type": "mrkdwn",
+        "text": (
+            "Inappropriate language is not allowed, type either 1 or 5 again if you would like to post feedback"
         ),
     },
     }
@@ -118,7 +86,40 @@ class OnboardingTutorial:
             ],
 
         }
+    def get_mess_inap(self):
+        return{
+            "ts": self.timestamp,
+            "channel": self.channel,
+            "username": self.username,
+            "icon_emoji": self.icon_emoji,
+            "blocks": [
+                # self.WELCOME_BLOCK,
+                self.BAD_BLOCK,
+                self.DIVIDER_BLOCK,
+                # self.Y_N,
+                # *self._get_reaction_block(),
+                # self.DIVIDER_BLOCK,
+                # *self._get_pin_block(),
+            ],
 
+        }
+    def get_mess_incor(self):
+        return{
+            "ts": self.timestamp,
+            "channel": self.channel,
+            "username": self.username,
+            "icon_emoji": self.icon_emoji,
+            "blocks": [
+                # self.WELCOME_BLOCK,
+                self.INCORRECT_BLOCK,
+                self.DIVIDER_BLOCK,
+                # self.Y_N,
+                # *self._get_reaction_block(),
+                # self.DIVIDER_BLOCK,
+                # *self._get_pin_block(),
+            ],
+
+        }
     def get_mess_sad(self):
         return{
             "ts": self.timestamp,
@@ -219,22 +220,24 @@ class OnboardingTutorial:
     def _get_task_block2(text, information, sec_info):
         return [
             {"type": "section", "text": {"type": "mrkdwn", "text": text}},
-            # {"type": "interactive_message", "attachments": [{"type": "button", "text": {"type": "plain_text","emoji": True,"text": "needs improvement"},"style": "danger","value": "good"}]},
-            # {"type": "button",
-            # "attachments":[{
-            # "callback_id":"button_cli",
-            # "attachment_type": "default",
-            # # [{
-            # "actions":
-            # [{
-            # "type": "button",
-            # "text":
-            # {"type": "plain_text","emoji": True,"text": "satisfactory"},
-            # "style": "primary","value": "bad"}]
-            # # }]
-            # }]
-            # },
-            #  {"type": "actions","elements": [{"type": "button", "text": {"type": "plain_text","emoji": True,"text": "needs improvement"},"style": "danger","value": "good", "action_id": "improv"}]},
-            # {"type": "actions", "elements": [{"type": "button", "text": {"type": "plain_text","emoji": True,"text": "satisfactory"},"style": "primary","value": "bad"}]},
-
         ]
+
+
+
+# {"type": "interactive_message", "attachments": [{"type": "button", "text": {"type": "plain_text","emoji": True,"text": "needs improvement"},"style": "danger","value": "good"}]},
+# {"type": "button",
+# "attachments":[{
+# "callback_id":"button_cli",
+# "attachment_type": "default",
+# # [{
+# "actions":
+# [{
+# "type": "button",
+# "text":
+# {"type": "plain_text","emoji": True,"text": "satisfactory"},
+# "style": "primary","value": "bad"}]
+# # }]
+# }]
+# },
+#  {"type": "actions","elements": [{"type": "button", "text": {"type": "plain_text","emoji": True,"text": "needs improvement"},"style": "danger","value": "good", "action_id": "improv"}]},
+# {"type": "actions", "elements": [{"type": "button", "text": {"type": "plain_text","emoji": True,"text": "satisfactory"},"style": "primary","value": "bad"}]},
